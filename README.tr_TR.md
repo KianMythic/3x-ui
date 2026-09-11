@@ -1,6 +1,6 @@
 [English](/README.md) | [فارسی](/README.fa_IR.md) | [العربية](/README.ar_EG.md) | [中文](/README.zh_CN.md) | [Español](/README.es_ES.md) | [Русский](/README.ru_RU.md) | [Türkçe](/README.tr_TR.md)
 
-# 3X-UI — RBAC Fork'u (admin6501)
+# 3X-UI — RBAC Fork'u (KianMythic)
 
 [MHSanaei/3X-UI](https://github.com/MHSanaei/3x-ui) projesinin özelleştirilmiş bir fork'u — [Xray-core](https://github.com/XTLS/Xray-core) sunucularını yönetmek için gelişmiş, açık kaynaklı bir web paneli — yerleşik bir **çok yöneticili RBAC sistemi**, **bayi (Reseller) kapsam sınırlaması** ve internetsiz/kısıtlı sunucular için **tamamen çevrimdışı kurulum aracı** ile genişletilmiştir.
 
@@ -16,7 +16,7 @@
   - `readonly` — her şeyi görüntüleyebilir ancak hiçbir yazma işlemi yapamaz.
 - **Denetim günlüğü (Audit Log)** — her yönetici işlemi (yönetici oluşturma/düzenleme/silme, parola sıfırlama, …) işlemi yapan, hedef ve zaman damgasıyla kaydedilir.
 - **Çevrimdışı kurulum paketi** — kendi kendine yeten bir tarball (panel ikilisi + Xray-core + geo verileri) ile internetsiz bir sunucuya kurulum. Bkz. [`offline/`](offline/).
-- **Fork'a duyarlı güncelleyici** — panelin "güncellemeyi denetle" özelliği sürümleri bu fork'tan (`admin6501/3x-ui`) okur.
+- **Fork'a duyarlı güncelleyici** — panelin "güncellemeyi denetle" özelliği sürümleri bu fork'tan (`KianMythic/3x-ui`) okur.
 - **PostgreSQL güvenli geçiş** — SQLite → PostgreSQL geçişi tüm RBAC verilerini (yöneticiler, roller, izin verilen gelenler, denetim günlükleri) kopyalar.
 
 ## Bayi (reseller) trafik tahsisi
@@ -67,7 +67,7 @@ Yukarıdakilere ek olarak panel şunları da içerir:
 ## Hızlı Başlangıç (çevrimiçi)
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/admin6501/3x-ui/main/install.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/KianMythic/3x-ui/main/install.sh)
 ```
 
 Kurulum sırasında rastgele bir kullanıcı adı, parola ve web yolu oluşturulur. Ardından yönetim menüsünü açmak için `x-ui` komutunu çalıştırın (başlat/durdur, kimlik bilgilerini sıfırla, SSL yönet vb.).

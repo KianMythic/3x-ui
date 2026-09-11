@@ -1,6 +1,6 @@
 [English](/README.md) | [فارسی](/README.fa_IR.md) | [العربية](/README.ar_EG.md) | [中文](/README.zh_CN.md) | [Español](/README.es_ES.md) | [Русский](/README.ru_RU.md) | [Türkçe](/README.tr_TR.md)
 
-# 3X-UI — RBAC Fork (admin6501)
+# 3X-UI — RBAC Fork (KianMythic)
 
 A customized fork of [MHSanaei/3X-UI](https://github.com/MHSanaei/3x-ui) — an advanced, open-source web panel for managing [Xray-core](https://github.com/XTLS/Xray-core) servers — extended with a built-in **multi-admin RBAC system**, **reseller scoping**, and a **fully offline installer** for air-gapped or restricted servers.
 
@@ -16,7 +16,7 @@ A customized fork of [MHSanaei/3X-UI](https://github.com/MHSanaei/3x-ui) — an 
   - `readonly` — can view everything but cannot perform any write action.
 - **Audit log** — every admin action (create / update / delete admin, password reset, …) is recorded with actor, target, and timestamp.
 - **Offline install bundle** — install on a server with no internet using a self-contained tarball (panel binary + Xray-core + geo data). See [`offline/`](offline/).
-- **Fork-aware updater** — the panel's "check for update" reads releases from this fork (`admin6501/3x-ui`).
+- **Fork-aware updater** — the panel's "check for update" reads releases from this fork (`KianMythic/3x-ui`).
 - **PostgreSQL-safe migration** — SQLite → PostgreSQL migration copies all RBAC data (admins, roles, allowed inbounds, audit logs).
 
 ## Reseller traffic allocation
@@ -67,7 +67,7 @@ Beyond the basics above, the panel also includes:
 ## Quick Start (online)
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/admin6501/3x-ui/main/install.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/KianMythic/3x-ui/main/install.sh)
 ```
 
 A random username, password, and web base path are generated during install. Run `x-ui` afterwards to open the management menu (start/stop, reset credentials, manage SSL, etc.).

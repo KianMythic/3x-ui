@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 red='\033[0;31m'
 green='\033[0;32m'
@@ -594,9 +594,9 @@ prompt_and_setup_ssl() {
     echo -e "${green}1.${plain} Let's Encrypt for Domain (90-day validity, auto-renews)"
     echo -e "${green}2.${plain} Let's Encrypt for IP Address (6-day validity, auto-renews)"
     echo -e "${green}3.${plain} Custom SSL Certificate (Path to existing files)"
-    echo -e "${green}4.${plain} Skip SSL (advanced â€” behind reverse proxy / SSH tunnel only)"
+    echo -e "${green}4.${plain} Skip SSL (advanced — behind reverse proxy / SSH tunnel only)"
     echo -e "${blue}Note:${plain} Options 1 & 2 require port 80 open. Option 3 requires manual paths."
-    echo -e "${blue}Note:${plain} Option 4 serves the panel over plain HTTP â€” only safe behind nginx/Caddy or an SSH tunnel."
+    echo -e "${blue}Note:${plain} Option 4 serves the panel over plain HTTP — only safe behind nginx/Caddy or an SSH tunnel."
     read -rp "Choose an option (default 2 for IP): " ssl_choice
     ssl_choice="${ssl_choice// /}" # Trim whitespace
 
@@ -617,7 +617,7 @@ prompt_and_setup_ssl() {
 
                 if [[ -n "${cert_domain}" ]]; then
                     SSL_HOST="${cert_domain}"
-                    echo -e "${green}âœ“ SSL certificate configured successfully with domain: ${cert_domain}${plain}"
+                    echo -e "${green}✓ SSL certificate configured successfully with domain: ${cert_domain}${plain}"
                 else
                     echo -e "${yellow}SSL setup may have completed, but domain extraction failed${plain}"
                     SSL_HOST="${server_ip}"
@@ -646,9 +646,9 @@ prompt_and_setup_ssl() {
             setup_ip_certificate "${server_ip}" "${ipv6_addr}"
             if [ $? -eq 0 ]; then
                 SSL_HOST="${server_ip}"
-                echo -e "${green}âœ“ Let's Encrypt IP certificate configured successfully${plain}"
+                echo -e "${green}✓ Let's Encrypt IP certificate configured successfully${plain}"
             else
-                echo -e "${red}âœ— IP certificate setup failed. Please check port 80 is open.${plain}"
+                echo -e "${red}✗ IP certificate setup failed. Please check port 80 is open.${plain}"
                 SSL_HOST="${server_ip}"
             fi
 
@@ -715,31 +715,31 @@ prompt_and_setup_ssl() {
                 SSL_HOST="${server_ip}"
             fi
 
-            echo -e "${green}âœ“ Custom certificate paths applied.${plain}"
+            echo -e "${green}✓ Custom certificate paths applied.${plain}"
             echo -e "${yellow}Note: You are responsible for renewing these files externally.${plain}"
 
             systemctl restart x-ui > /dev/null 2>&1 || rc-service x-ui restart > /dev/null 2>&1
             ;;
         4)
             echo ""
-            echo -e "${red}âš  Panel will be installed WITHOUT SSL/TLS.${plain}"
+            echo -e "${red}⚠ Panel will be installed WITHOUT SSL/TLS.${plain}"
             echo -e "${yellow}Login credentials and cookies will travel as plain HTTP.${plain}"
             echo -e "${yellow}Only safe when:${plain}"
-            echo -e "${yellow}  â€¢ A reverse proxy (nginx, Caddy, Traefik) terminates TLS for you, or${plain}"
-            echo -e "${yellow}  â€¢ You access the panel exclusively via SSH tunnel${plain}"
+            echo -e "${yellow}  • A reverse proxy (nginx, Caddy, Traefik) terminates TLS for you, or${plain}"
+            echo -e "${yellow}  • You access the panel exclusively via SSH tunnel${plain}"
             echo ""
 
             SSL_SCHEME="http"
             SSL_HOST="${server_ip}"
 
             local bind_local=""
-            read -rp "Bind the panel to 127.0.0.1 only? (recommended â€” forces SSH tunnel / reverse-proxy access) [y/N]: " bind_local
+            read -rp "Bind the panel to 127.0.0.1 only? (recommended — forces SSH tunnel / reverse-proxy access) [y/N]: " bind_local
             if [[ "$bind_local" == "y" || "$bind_local" == "Y" ]]; then
                 ${xui_folder}/x-ui setting -listenIP "127.0.0.1" > /dev/null 2>&1
                 SSL_HOST="127.0.0.1"
-                echo -e "${green}âœ“ Panel bound to 127.0.0.1 only. It is now unreachable from the public internet.${plain}"
+                echo -e "${green}✓ Panel bound to 127.0.0.1 only. It is now unreachable from the public internet.${plain}"
                 echo ""
-                echo -e "${green}SSH Port Forwarding â€” open the panel from your local machine via:${plain}"
+                echo -e "${green}SSH Port Forwarding — open the panel from your local machine via:${plain}"
                 echo -e "  Standard SSH command:"
                 echo -e "  ${yellow}ssh -L 2222:127.0.0.1:${panel_port} root@${server_ip}${plain}"
                 echo -e "  If using an SSH key:"
@@ -753,7 +753,7 @@ prompt_and_setup_ssl() {
             fi
 
             systemctl restart x-ui > /dev/null 2>&1 || rc-service x-ui restart > /dev/null 2>&1
-            echo -e "${green}âœ“ SSL setup skipped.${plain}"
+            echo -e "${green}✓ SSL setup skipped.${plain}"
             ;;
         *)
             echo -e "${red}Invalid option. Skipping SSL setup.${plain}"
@@ -819,9 +819,9 @@ config_after_update() {
     # Check and prompt for SSL if missing
     if [[ -z "$existing_cert" ]]; then
         echo ""
-        echo -e "${red}â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${plain}"
-        echo -e "${red}      âš  NO SSL CERTIFICATE DETECTED âš      ${plain}"
-        echo -e "${red}â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${plain}"
+        echo -e "${red}═══════════════════════════════════════════${plain}"
+        echo -e "${red}      ⚠ NO SSL CERTIFICATE DETECTED ⚠     ${plain}"
+        echo -e "${red}═══════════════════════════════════════════${plain}"
         echo -e "${yellow}For security, SSL certificate is MANDATORY for all panels.${plain}"
         echo -e "${yellow}Let's Encrypt now supports both domains and IP addresses!${plain}"
         echo ""
@@ -830,22 +830,22 @@ config_after_update() {
         prompt_and_setup_ssl "${existing_port}" "${existing_webBasePath}" "${server_ip}"
 
         echo ""
-        echo -e "${green}â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${plain}"
+        echo -e "${green}═══════════════════════════════════════════${plain}"
         echo -e "${green}     Panel Access Information              ${plain}"
-        echo -e "${green}â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${plain}"
+        echo -e "${green}═══════════════════════════════════════════${plain}"
         echo -e "${green}Access URL: https://${SSL_HOST}:${existing_port}/${existing_webBasePath}${plain}"
-        echo -e "${green}â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${plain}"
-        echo -e "${yellow}âš  SSL Certificate: Enabled and configured${plain}"
+        echo -e "${green}═══════════════════════════════════════════${plain}"
+        echo -e "${yellow}⚠ SSL Certificate: Enabled and configured${plain}"
     else
         echo -e "${green}SSL certificate is already configured${plain}"
         # Show access URL with existing certificate
         local cert_domain=$(basename "$(dirname "$existing_cert")")
         echo ""
-        echo -e "${green}â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${plain}"
+        echo -e "${green}═══════════════════════════════════════════${plain}"
         echo -e "${green}     Panel Access Information              ${plain}"
-        echo -e "${green}â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${plain}"
+        echo -e "${green}═══════════════════════════════════════════${plain}"
         echo -e "${green}Access URL: https://${cert_domain}:${existing_port}/${existing_webBasePath}${plain}"
-        echo -e "${green}â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${plain}"
+        echo -e "${green}═══════════════════════════════════════════${plain}"
     fi
 
     if [[ "$panel_needs_restart" -eq 1 ]]; then
@@ -1071,27 +1071,26 @@ update_x-ui() {
 
     echo -e "${green}x-ui ${tag_version}${plain} updating finished, it is running now..."
     echo -e ""
-    echo -e "â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  ${blue}x-ui control menu usages (subcommands):${plain}              â”‚
-â”‚                                                       â”‚
-â”‚  ${blue}x-ui${plain}              - Admin Management Script          â”‚
-â”‚  ${blue}x-ui start${plain}        - Start                            â”‚
-â”‚  ${blue}x-ui stop${plain}         - Stop                             â”‚
-â”‚  ${blue}x-ui restart${plain}      - Restart                          â”‚
-â”‚  ${blue}x-ui status${plain}       - Current Status                   â”‚
-â”‚  ${blue}x-ui settings${plain}     - Current Settings                 â”‚
-â”‚  ${blue}x-ui enable${plain}       - Enable Autostart on OS Startup   â”‚
-â”‚  ${blue}x-ui disable${plain}      - Disable Autostart on OS Startup  â”‚
-â”‚  ${blue}x-ui log${plain}          - Check logs                       â”‚
-â”‚  ${blue}x-ui banlog${plain}       - Check Fail2ban ban logs          â”‚
-â”‚  ${blue}x-ui update${plain}       - Update                           â”‚
-â”‚  ${blue}x-ui legacy${plain}       - Legacy version                   â”‚
-â”‚  ${blue}x-ui install${plain}      - Install                          â”‚
-â”‚  ${blue}x-ui uninstall${plain}    - Uninstall                        â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜"
+    echo -e "┌───────────────────────────────────────────────────────┐
+│  ${blue}x-ui control menu usages (subcommands):${plain}              │
+│                                                       │
+│  ${blue}x-ui${plain}              - Admin Management Script          │
+│  ${blue}x-ui start${plain}        - Start                            │
+│  ${blue}x-ui stop${plain}         - Stop                             │
+│  ${blue}x-ui restart${plain}      - Restart                          │
+│  ${blue}x-ui status${plain}       - Current Status                   │
+│  ${blue}x-ui settings${plain}     - Current Settings                 │
+│  ${blue}x-ui enable${plain}       - Enable Autostart on OS Startup   │
+│  ${blue}x-ui disable${plain}      - Disable Autostart on OS Startup  │
+│  ${blue}x-ui log${plain}          - Check logs                       │
+│  ${blue}x-ui banlog${plain}       - Check Fail2ban ban logs          │
+│  ${blue}x-ui update${plain}       - Update                           │
+│  ${blue}x-ui legacy${plain}       - Legacy version                   │
+│  ${blue}x-ui install${plain}      - Install                          │
+│  ${blue}x-ui uninstall${plain}    - Uninstall                        │
+└───────────────────────────────────────────────────────┘"
 }
 
 echo -e "${green}Running...${plain}"
 install_base
 update_x-ui $1
-

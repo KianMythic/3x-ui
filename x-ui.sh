@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 red='\033[0;31m'
 green='\033[0;32m'
@@ -332,7 +332,7 @@ check_config() {
         dsn="$(grep -E '^XUI_DB_DSN=' "$db_env_file" | head -1 | cut -d= -f2-)"
         local dsn_safe
         dsn_safe="$(echo "$dsn" | sed -E 's|(://[^:/@]+:)[^@]+@|\1****@|')"
-        echo -e "${green}Database: PostgreSQL â€” ${dsn_safe}${plain}"
+        echo -e "${green}Database: PostgreSQL — ${dsn_safe}${plain}"
     else
         echo -e "${green}Database: SQLite (/etc/x-ui/x-ui.db)${plain}"
     fi
@@ -394,7 +394,7 @@ check_config() {
             echo -e "${yellow}The certificate also covers:${plain} $(echo "$cert_sans" | grep -vx "$domain" | tr '\n' ' ')"
         fi
     else
-        echo -e "${red}âš  WARNING: No SSL certificate configured!${plain}"
+        echo -e "${red}⚠ WARNING: No SSL certificate configured!${plain}"
         echo -e "${yellow}You can get a Let's Encrypt certificate for your IP address (valid ~6 days, auto-renews).${plain}"
         read -rp "Generate SSL certificate for IP now? [y/N]: " gen_ssl
         if [[ "$gen_ssl" == "y" || "$gen_ssl" == "Y" ]]; then
@@ -715,7 +715,7 @@ disable_bbr() {
     if [ -f "/etc/sysctl.d/99-bbr-x-ui.conf" ]; then
         old_settings=$(head -1 /etc/sysctl.d/99-bbr-x-ui.conf | tr -d '#')
         # sysctl -w already restores the live values, so no `sysctl --system`
-        # afterwards â€” it would re-apply every sysctl file on the host and
+        # afterwards — it would re-apply every sysctl file on the host and
         # surface unrelated errors from the distro's own defaults (see issue #5160)
         sysctl -w net.core.default_qdisc="${old_settings%:*}"
         sysctl -w net.ipv4.tcp_congestion_control="${old_settings#*:}"
@@ -1354,7 +1354,7 @@ ssl_cert_issue_main() {
                 done
             fi
             # The panel's configured certificate may live outside /root/cert
-            # (e.g. certbot under /etc/letsencrypt) â€” show it too (#5070).
+            # (e.g. certbot under /etc/letsencrypt) — show it too (#5070).
             local panel_cert=$(${xui_folder}/x-ui setting -getCert true | grep 'cert:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
             if [[ -n "${panel_cert}" && "${panel_cert}" != /root/cert/* ]]; then
                 echo -e "Panel certificate (custom path): ${panel_cert}"
@@ -3089,69 +3089,69 @@ migrate_db_prompt() {
 }
 
 show_usage() {
-    echo -e "â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  ${blue}x-ui control menu usages (subcommands):${plain}                       â”‚
-â”‚                                                                â”‚
-â”‚  ${blue}x-ui${plain}                       - Admin Management Script          â”‚
-â”‚  ${blue}x-ui start${plain}                 - Start                            â”‚
-â”‚  ${blue}x-ui stop${plain}                  - Stop                             â”‚
-â”‚  ${blue}x-ui restart${plain}               - Restart                          â”‚
-|  ${blue}x-ui restart-xray${plain}          - Restart Xray                     â”‚
-â”‚  ${blue}x-ui status${plain}                - Current Status                   â”‚
-â”‚  ${blue}x-ui settings${plain}              - Current Settings                 â”‚
-â”‚  ${blue}x-ui enable${plain}                - Enable Autostart on OS Startup   â”‚
-â”‚  ${blue}x-ui disable${plain}               - Disable Autostart on OS Startup  â”‚
-â”‚  ${blue}x-ui log${plain}                   - Check logs                       â”‚
-â”‚  ${blue}x-ui banlog${plain}                - Check Fail2ban ban logs          â”‚
-â”‚  ${blue}x-ui update${plain}                - Update                           â”‚
-â”‚  ${blue}x-ui update-all-geofiles${plain}   - Update all geo files             â”‚
-â”‚  ${blue}x-ui migrateDB [file]${plain}      - Convert .db <-> .dump (SQLite)   â”‚
-â”‚  ${blue}x-ui legacy${plain}                - Legacy version                   â”‚
-â”‚  ${blue}x-ui install${plain}               - Install                          â”‚
-â”‚  ${blue}x-ui uninstall${plain}             - Uninstall                        â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜"
+    echo -e "┌────────────────────────────────────────────────────────────────┐
+│  ${blue}x-ui control menu usages (subcommands):${plain}                       │
+│                                                                │
+│  ${blue}x-ui${plain}                       - Admin Management Script          │
+│  ${blue}x-ui start${plain}                 - Start                            │
+│  ${blue}x-ui stop${plain}                  - Stop                             │
+│  ${blue}x-ui restart${plain}               - Restart                          │
+|  ${blue}x-ui restart-xray${plain}          - Restart Xray                     │
+│  ${blue}x-ui status${plain}                - Current Status                   │
+│  ${blue}x-ui settings${plain}              - Current Settings                 │
+│  ${blue}x-ui enable${plain}                - Enable Autostart on OS Startup   │
+│  ${blue}x-ui disable${plain}               - Disable Autostart on OS Startup  │
+│  ${blue}x-ui log${plain}                   - Check logs                       │
+│  ${blue}x-ui banlog${plain}                - Check Fail2ban ban logs          │
+│  ${blue}x-ui update${plain}                - Update                           │
+│  ${blue}x-ui update-all-geofiles${plain}   - Update all geo files             │
+│  ${blue}x-ui migrateDB [file]${plain}      - Convert .db <-> .dump (SQLite)   │
+│  ${blue}x-ui legacy${plain}                - Legacy version                   │
+│  ${blue}x-ui install${plain}               - Install                          │
+│  ${blue}x-ui uninstall${plain}             - Uninstall                        │
+└────────────────────────────────────────────────────────────────┘"
 }
 
 show_menu() {
     echo -e "
-â•”â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•—
-â”‚   ${green}3X-UI Panel Management Script${plain}                â”‚
-â”‚   ${green}0.${plain} Exit Script                               â”‚
-â”‚â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”‚
-â”‚   ${green}1.${plain} Install                                   â”‚
-â”‚   ${green}2.${plain} Update                                    â”‚
-â”‚   ${green}3.${plain} Update Menu                               â”‚
-â”‚   ${green}4.${plain} Legacy Version                            â”‚
-â”‚   ${green}5.${plain} Uninstall                                 â”‚
-â”‚â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”‚
-â”‚   ${green}6.${plain} Reset Username & Password                 â”‚
-â”‚   ${green}7.${plain} Reset Web Base Path                       â”‚
-â”‚   ${green}8.${plain} Reset Settings                            â”‚
-â”‚   ${green}9.${plain} Change Port                               â”‚
-â”‚  ${green}10.${plain} View Current Settings                     â”‚
-â”‚â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”‚
-â”‚  ${green}11.${plain} Start                                     â”‚
-â”‚  ${green}12.${plain} Stop                                      â”‚
-â”‚  ${green}13.${plain} Restart                                   â”‚
-|  ${green}14.${plain} Restart Xray                              â”‚
-â”‚  ${green}15.${plain} Check Status                              â”‚
-â”‚  ${green}16.${plain} Logs Management                           â”‚
-â”‚â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”‚
-â”‚  ${green}17.${plain} Enable Autostart                          â”‚
-â”‚  ${green}18.${plain} Disable Autostart                         â”‚
-â”‚â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”‚
-â”‚  ${green}19.${plain} SSL Certificate Management                â”‚
-â”‚  ${green}20.${plain} Cloudflare SSL Certificate                â”‚
-â”‚  ${green}21.${plain} IP Limit Management                       â”‚
-â”‚  ${green}22.${plain} Firewall Management                       â”‚
-â”‚  ${green}23.${plain} SSH Port Forwarding Management            â”‚
-â”‚â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”‚
-â”‚  ${green}24.${plain} Enable BBR                                â”‚
-â”‚  ${green}25.${plain} Update Geo Files                          â”‚
-â”‚  ${green}26.${plain} Speedtest by Ookla                        â”‚
-â”‚â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”‚
-â”‚  ${green}27.${plain} PostgreSQL Management                     â”‚
-â•šâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•
+╔────────────────────────────────────────────────╗
+│   ${green}3X-UI Panel Management Script${plain}                │
+│   ${green}0.${plain} Exit Script                               │
+│────────────────────────────────────────────────│
+│   ${green}1.${plain} Install                                   │
+│   ${green}2.${plain} Update                                    │
+│   ${green}3.${plain} Update Menu                               │
+│   ${green}4.${plain} Legacy Version                            │
+│   ${green}5.${plain} Uninstall                                 │
+│────────────────────────────────────────────────│
+│   ${green}6.${plain} Reset Username & Password                 │
+│   ${green}7.${plain} Reset Web Base Path                       │
+│   ${green}8.${plain} Reset Settings                            │
+│   ${green}9.${plain} Change Port                               │
+│  ${green}10.${plain} View Current Settings                     │
+│────────────────────────────────────────────────│
+│  ${green}11.${plain} Start                                     │
+│  ${green}12.${plain} Stop                                      │
+│  ${green}13.${plain} Restart                                   │
+|  ${green}14.${plain} Restart Xray                              │
+│  ${green}15.${plain} Check Status                              │
+│  ${green}16.${plain} Logs Management                           │
+│────────────────────────────────────────────────│
+│  ${green}17.${plain} Enable Autostart                          │
+│  ${green}18.${plain} Disable Autostart                         │
+│────────────────────────────────────────────────│
+│  ${green}19.${plain} SSL Certificate Management                │
+│  ${green}20.${plain} Cloudflare SSL Certificate                │
+│  ${green}21.${plain} IP Limit Management                       │
+│  ${green}22.${plain} Firewall Management                       │
+│  ${green}23.${plain} SSH Port Forwarding Management            │
+│────────────────────────────────────────────────│
+│  ${green}24.${plain} Enable BBR                                │
+│  ${green}25.${plain} Update Geo Files                          │
+│  ${green}26.${plain} Speedtest by Ookla                        │
+│────────────────────────────────────────────────│
+│  ${green}27.${plain} PostgreSQL Management                     │
+╚────────────────────────────────────────────────╝
 "
     show_status
     echo && read -rp "Please enter your selection [0-27]: " num
@@ -3308,4 +3308,3 @@ if [[ $# > 0 ]]; then
 else
     show_menu
 fi
-

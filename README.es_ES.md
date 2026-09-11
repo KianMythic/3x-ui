@@ -1,6 +1,6 @@
 [English](/README.md) | [فارسی](/README.fa_IR.md) | [العربية](/README.ar_EG.md) | [中文](/README.zh_CN.md) | [Español](/README.es_ES.md) | [Русский](/README.ru_RU.md) | [Türkçe](/README.tr_TR.md)
 
-# 3X-UI — Fork con RBAC (admin6501)
+# 3X-UI — Fork con RBAC (KianMythic)
 
 Un fork personalizado de [MHSanaei/3X-UI](https://github.com/MHSanaei/3x-ui) — un panel web avanzado y de código abierto para gestionar servidores [Xray-core](https://github.com/XTLS/Xray-core) — ampliado con un **sistema multi-administrador basado en roles (RBAC)**, **alcance para revendedores (Reseller)** y un **instalador totalmente sin conexión** para servidores aislados o restringidos.
 
@@ -16,7 +16,7 @@ Un fork personalizado de [MHSanaei/3X-UI](https://github.com/MHSanaei/3x-ui) —
   - `readonly` — puede ver todo pero no realizar ninguna acción de escritura.
 - **Registro de auditoría (Audit Log)** — cada acción de administrador (crear/editar/eliminar administrador, restablecer contraseña, …) se registra con actor, objetivo y marca de tiempo.
 - **Paquete de instalación sin conexión** — instala en un servidor sin internet mediante un tarball autónomo (binario del panel + Xray-core + datos geo). Ver [`offline/`](offline/).
-- **Comprobador de actualizaciones del fork** — la opción "buscar actualización" del panel lee las versiones de este fork (`admin6501/3x-ui`).
+- **Comprobador de actualizaciones del fork** — la opción "buscar actualización" del panel lee las versiones de este fork (`KianMythic/3x-ui`).
 - **Migración segura a PostgreSQL** — la migración SQLite → PostgreSQL copia todos los datos RBAC (administradores, roles, entradas permitidas, registros de auditoría).
 
 ## Asignación de tráfico por revendedor (reseller)
@@ -67,7 +67,7 @@ Además de lo anterior, el panel también incluye:
 ## Inicio rápido (en línea)
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/admin6501/3x-ui/main/install.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/KianMythic/3x-ui/main/install.sh)
 ```
 
 Durante la instalación se generan un usuario, una contraseña y una ruta web aleatorios. Luego ejecuta `x-ui` para abrir el menú de administración (iniciar/detener, restablecer credenciales, gestionar SSL, etc.).

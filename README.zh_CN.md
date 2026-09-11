@@ -1,6 +1,6 @@
 [English](/README.md) | [فارسی](/README.fa_IR.md) | [العربية](/README.ar_EG.md) | [中文](/README.zh_CN.md) | [Español](/README.es_ES.md) | [Русский](/README.ru_RU.md) | [Türkçe](/README.tr_TR.md)
 
-# 3X-UI — RBAC 分支 (admin6501)
+# 3X-UI — RBAC 分支 (KianMythic)
 
 [MHSanaei/3X-UI](https://github.com/MHSanaei/3x-ui) 的定制分支——一个用于管理 [Xray-core](https://github.com/XTLS/Xray-core) 服务器的先进开源 Web 面板——扩展了内置的**多管理员 RBAC 系统**、**分销商（Reseller）范围限制**，以及面向隔离网/受限服务器的**完全离线安装程序**。
 
@@ -16,7 +16,7 @@
   - `readonly`——可查看一切，但不能执行任何写操作。
 - **审计日志（Audit Log）**——每个管理员操作（新增/修改/删除管理员、重置密码……）都会记录操作者、目标与时间。
 - **离线安装包**——通过自包含的 tarball（面板二进制 + Xray-core + geo 数据）在无网络的服务器上安装。见 [`offline/`](offline/)。
-- **面向分支的更新检查**——面板的"检查更新"读取本分支（`admin6501/3x-ui`）的发行版。
+- **面向分支的更新检查**——面板的"检查更新"读取本分支（`KianMythic/3x-ui`）的发行版。
 - **PostgreSQL 安全迁移**——SQLite → PostgreSQL 迁移会复制全部 RBAC 数据（管理员、角色、允许的入站、审计日志）。
 
 ## 分销商（reseller）流量分配
@@ -67,7 +67,7 @@
 ## 快速开始（在线）
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/admin6501/3x-ui/main/install.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/KianMythic/3x-ui/main/install.sh)
 ```
 
 安装期间会生成随机的用户名、密码与 Web 路径。之后运行 `x-ui` 打开管理菜单（启动/停止、重置凭据、管理 SSL 等）。
