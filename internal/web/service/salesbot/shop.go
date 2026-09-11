@@ -501,8 +501,18 @@ func (b *Bot) sendLinks(chatId int64, cfg *model.BotConfig, sub string) {
 		}
 		return
 	}
-	for _, link := range links {
-		b.send(chatId, "<code>"+esc(link)+"</code>")
+	
+	if sub != "" {
+		b.send(chatId, "<b>"+b.t().s("card.config.subLink")+"</b>\n<code>"+esc(sub)+"</code>")
+	}
+	
+	if len(links) > 0 {
+		var out strings.Builder
+		out.WriteString("<b>" + b.t().s("ibtn.links") + "</b>\n\n")
+		for _, link := range links {
+			out.WriteString("<code>" + esc(link) + "</code>\n\n")
+		}
+		b.send(chatId, out.String())
 	}
 }
 
