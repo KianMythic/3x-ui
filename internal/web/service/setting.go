@@ -1,4 +1,4 @@
-package service
+﻿package service
 
 import (
 	_ "embed"
@@ -56,7 +56,7 @@ var defaultValueMap = map[string]string{
 	"pageSize":                    "25",
 	"expireDiff":                  "0",
 	"trafficDiff":                 "0",
-	"remarkTemplate":              "{{EMAIL}}|{{INBOUND}}|📊{{TRAFFIC_LEFT}}|⏳{{DAYS_LEFT}}D",
+	"remarkTemplate":              "{{EMAIL}}|{{INBOUND}}|ðŸ“Š{{TRAFFIC_LEFT}}|â³{{DAYS_LEFT}}D",
 	"timeLocation":                "Local",
 	"tgBotEnable":                 "false",
 	"tgBotToken":                  "",
@@ -144,7 +144,7 @@ var defaultValueMap = map[string]string{
 	"autoDeleteExpiredEnable": "false",
 	"autoDeleteExpiredDays":   "0",
 
-	// Reseller sales bot — a second Telegram bot, separate from the
+	// Reseller sales bot â€” a second Telegram bot, separate from the
 	// notification bot above, that sells reseller accounts.
 	"salesBotEnable":   "false",
 	"salesBotToken":    "",
@@ -152,13 +152,14 @@ var defaultValueMap = map[string]string{
 	"salesBotWelcome":  "",
 	"salesBotPayText":  "",
 	"salesBotSupport":  "",
-	"salesBotCurrency": "تومان",
+	"salesBotCurrency": "ØªÙˆÙ…Ø§Ù†",
 	"salesBotLang":     "fa-IR",
 
-	// Telegram shop — wallet-funded, pay-as-you-go config sales.
+	// Telegram shop â€” wallet-funded, pay-as-you-go config sales.
 	"shopPricePerGB":  "0",
 	"shopPricePerDay": "0",
 	"shopInboundId":   "0",
+	"shopInbounds":    "[]",
 	"shopMinTopUp":    "0",
 	"shopMaxTopUp":    "0",
 	"shopMinBalance":  "0",
@@ -171,7 +172,7 @@ var defaultValueMap = map[string]string{
 	// shop deletes it. 0 = never delete.
 	"shopDeleteDeadDays": "0",
 
-	// Event bus — per-subscriber event filtering (empty = all disabled)
+	// Event bus â€” per-subscriber event filtering (empty = all disabled)
 	"tgEnabledEvents":   "login.attempt,cpu.high",
 	"smtpEnabledEvents": "login.attempt,cpu.high",
 	"smtpCpu":           "80",
@@ -481,7 +482,7 @@ func (s *SettingService) SetPanelOutbound(tag string) error {
 
 // PanelEgressProxyURL resolves the loopback SOCKS bridge that the generated
 // config exposes when a panel outbound is configured (see injectPanelEgress).
-// It returns "" — meaning a direct connection — when the feature is off or
+// It returns "" â€” meaning a direct connection â€” when the feature is off or
 // the bridge is not present in the running core yet.
 func (s *SettingService) PanelEgressProxyURL() string {
 	tag, err := s.GetPanelOutbound()
@@ -911,7 +912,7 @@ func (s *SettingService) GetIpLimitEnable() (bool, error) {
 }
 
 // GetAccessLogEnable reports whether an Xray access log is configured. Used by
-// the UI for features that genuinely read the log file (the xray log viewer) —
+// the UI for features that genuinely read the log file (the xray log viewer) â€”
 // distinct from IP limiting, which works without it.
 func (s *SettingService) GetAccessLogEnable() (bool, error) {
 	accessLogPath, err := xray.GetAccessLogPath()
@@ -1070,7 +1071,7 @@ func (s *SettingService) GetSalesBotWelcome() (string, error) {
 }
 
 // GetSalesBotPayText holds the payment instructions shown before a buyer
-// uploads a receipt — a card number and account holder, typically.
+// uploads a receipt â€” a card number and account holder, typically.
 func (s *SettingService) GetSalesBotPayText() (string, error) {
 	return s.getString("salesBotPayText")
 }
@@ -1083,7 +1084,7 @@ func (s *SettingService) GetSalesBotCurrency() (string, error) {
 	return s.getString("salesBotCurrency")
 }
 
-// Telegram shop — wallet + pay-as-you-go
+// Telegram shop â€” wallet + pay-as-you-go
 
 // GetShopPricePerGB is what one gigabyte of consumed traffic costs. 0 disables
 // usage billing, which makes every config free.
@@ -1139,7 +1140,7 @@ const (
 
 // GetShopBillingInterval is how many minutes pass between billing runs. It is
 // always returned inside its bounds, so a hand-edited or missing value cannot
-// switch billing off — that would hand out free traffic.
+// switch billing off â€” that would hand out free traffic.
 func (s *SettingService) GetShopBillingInterval() (int, error) {
 	v, err := s.getInt("shopBillingInterval")
 	if err != nil {
@@ -1163,8 +1164,8 @@ func ClampShopBillingInterval(v int) int {
 	return v
 }
 
-// GetShopDeleteDeadDays is how many days a config may sit dead — out of traffic,
-// or with an empty wallet — before the shop deletes it from both the bot and the
+// GetShopDeleteDeadDays is how many days a config may sit dead â€” out of traffic,
+// or with an empty wallet â€” before the shop deletes it from both the bot and the
 // panel. 0 means never.
 func (s *SettingService) GetShopDeleteDeadDays() (int, error) {
 	v, err := s.getInt("shopDeleteDeadDays")
@@ -1195,7 +1196,7 @@ func (s *SettingService) GetAutoDeleteExpiredDays() (int, error) {
 	return s.getInt("autoDeleteExpiredDays")
 }
 
-// Event bus — per-subscriber event filtering
+// Event bus â€” per-subscriber event filtering
 
 func (s *SettingService) GetTgEnabledEvents() (string, error) {
 	return s.getString("tgEnabledEvents")
@@ -1378,7 +1379,7 @@ func (s *SettingService) preserveRedactedSecrets(allSetting *entity.AllSetting) 
 // their built-in default. The subscription Remark Template is one such field:
 // clearing it (fully, or by deleting a word/segment so only whitespace remains)
 // and saving should restore the default template rather than store a blank value
-// — matching the field's placeholder/default the UI shows after the save reloads.
+// â€” matching the field's placeholder/default the UI shows after the save reloads.
 func (s *SettingService) restoreBlankDefaults(allSetting *entity.AllSetting) {
 	if strings.TrimSpace(allSetting.RemarkTemplate) == "" {
 		allSetting.RemarkTemplate = defaultValueMap["remarkTemplate"]
@@ -1466,7 +1467,7 @@ func (s *SettingService) BuildSubURIBase(host string) string {
 }
 
 // PublicHost is the panel's own externally reachable name, for code that has to
-// build a URL with no incoming request to infer the host from — a Telegram bot,
+// build a URL with no incoming request to infer the host from â€” a Telegram bot,
 // a scheduled job. It is the same order the subscription server falls back
 // through, so a link built here matches one built from a browser request.
 // Empty when the admin has told the panel neither domain.
@@ -1495,7 +1496,7 @@ func hostOnly(raw string) string {
 	return strings.TrimSpace(raw)
 }
 
-// BuildSubURI is BuildSubURIBase with the subscription path appended — the
+// BuildSubURI is BuildSubURIBase with the subscription path appended â€” the
 // complete prefix a subscription id is hung off. Callers that hand a URL to a
 // user want this one; the base alone points at the subscription server's root,
 // which serves nothing.
@@ -1573,3 +1574,26 @@ func (s *SettingService) GetDefaultSettings(host string) (any, error) {
 
 	return result, nil
 }
+
+// GetShopInbounds are the inbounds the shop creates its configs on.
+func (s *SettingService) GetShopInbounds() ([]int, error) {
+	str, err := s.getString("shopInbounds")
+	if err == nil && str != "" && str != "[]" {
+		var inbounds []int
+		for _, part := range strings.Split(str, ",") {
+			part = strings.TrimSpace(part)
+			if id, err := strconv.Atoi(part); err == nil {
+				inbounds = append(inbounds, id)
+			}
+		}
+		if len(inbounds) > 0 {
+			return inbounds, nil
+		}
+	}
+	id, err := s.getInt("shopInboundId")
+	if err == nil && id > 0 {
+		return []int{id}, nil
+	}
+	return nil, err
+}
+

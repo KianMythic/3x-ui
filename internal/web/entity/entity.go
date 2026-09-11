@@ -1,4 +1,4 @@
-// Package entity defines data structures and entities used by the web layer of the 3x-ui panel.
+﻿// Package entity defines data structures and entities used by the web layer of the 3x-ui panel.
 package entity
 
 import (
@@ -137,7 +137,7 @@ type AllSetting struct {
 	// WARP
 	WarpUpdateInterval int `json:"warpUpdateInterval" form:"warpUpdateInterval" validate:"gte=0"`
 
-	// Device (HWID) limit — caps how many distinct devices may pull a client's
+	// Device (HWID) limit â€” caps how many distinct devices may pull a client's
 	// subscription. Devices identify themselves with the x-hwid header that
 	// Happ/Hiddify-family apps send.
 	HwidEnable         bool `json:"hwidEnable" form:"hwidEnable"`                              // Master switch for device-limit enforcement
@@ -150,7 +150,7 @@ type AllSetting struct {
 	AutoDeleteExpiredEnable bool `json:"autoDeleteExpiredEnable" form:"autoDeleteExpiredEnable"`              // Master switch for the auto-delete job
 	AutoDeleteExpiredDays   int  `json:"autoDeleteExpiredDays" form:"autoDeleteExpiredDays" validate:"gte=0"` // Days a client must stay expired before deletion; 0 = never delete
 
-	// Reseller sales bot — a second Telegram bot, separate from the notification
+	// Reseller sales bot â€” a second Telegram bot, separate from the notification
 	// bot above, that sells reseller accounts to buyers in Telegram.
 	SalesBotEnable   bool   `json:"salesBotEnable" form:"salesBotEnable"`     // Enable the reseller sales bot
 	SalesBotToken    string `json:"salesBotToken" form:"salesBotToken"`       // Sales bot token (its own bot, not the notification one)
@@ -161,10 +161,11 @@ type AllSetting struct {
 	SalesBotLang     string `json:"salesBotLang" form:"salesBotLang"`         // Language the sales bot talks to buyers in
 	SalesBotCurrency string `json:"salesBotCurrency" form:"salesBotCurrency"` // Currency label shown next to prices
 
-	// Telegram shop — wallet-funded, pay-as-you-go config sales.
+	// Telegram shop â€” wallet-funded, pay-as-you-go config sales.
 	ShopPricePerGB  int64  `json:"shopPricePerGB" form:"shopPricePerGB" validate:"gte=0"`   // Cost of one consumed GB; 0 = usage is free
 	ShopPricePerDay int64  `json:"shopPricePerDay" form:"shopPricePerDay" validate:"gte=0"` // Optional daily fee per live config; 0 = none
-	ShopInboundId   int    `json:"shopInboundId" form:"shopInboundId" validate:"gte=0"`     // Inbound the shop creates configs on
+	ShopInboundId   int    `json:"shopInboundId" form:"shopInboundId" validate:"gte=0"`     // Deprecated
+	ShopInbounds    string  `json:"shopInbounds" form:"shopInbounds"`                      // Inbounds the shop creates configs on    `json:"shopInboundId" form:"shopInboundId" validate:"gte=0"`     // Inbound the shop creates configs on
 	ShopMinTopUp    int64  `json:"shopMinTopUp" form:"shopMinTopUp" validate:"gte=0"`       // Smallest accepted wallet top-up
 	ShopMaxTopUp    int64  `json:"shopMaxTopUp" form:"shopMaxTopUp" validate:"gte=0"`       // Largest accepted wallet top-up; 0 = no ceiling
 	ShopMinBalance  int64  `json:"shopMinBalance" form:"shopMinBalance" validate:"gte=0"`   // Balance required before a config may be created
@@ -305,3 +306,5 @@ func (s *AllSetting) CheckValid() error {
 
 	return nil
 }
+
+

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Button, Divider, Input, InputNumber, Select, Space, Switch, Tabs } from 'antd';
 import { BellOutlined, SendOutlined, SettingOutlined, ShoppingOutlined } from '@ant-design/icons';
@@ -165,7 +165,7 @@ export default function TelegramTab({ allSetting, updateSetting }: TelegramTabPr
         if (cancelled) return;
         setInboundOptions((msg.obj ?? []).map((ib) => ({
           value: ib.id,
-          label: `#${ib.id} · ${ib.remark || ib.protocol} (:${ib.port})`,
+          label: `#${ib.id} Â· ${ib.remark || ib.protocol} (:${ib.port})`,
         })));
       })
       .catch(() => null)
@@ -484,3 +484,4 @@ export default function TelegramTab({ allSetting, updateSetting }: TelegramTabPr
     ]} />
   );
 }
+

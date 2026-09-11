@@ -1,4 +1,4 @@
-// Package service: the Telegram shop's wallet and pay-as-you-go billing.
+﻿// Package service: the Telegram shop's wallet and pay-as-you-go billing.
 //
 // A buyer tops their wallet up, creates a config with a traffic cap, and is
 // charged for what they actually consume at the panel's per-GB price. Nothing
@@ -87,7 +87,7 @@ func (s *ShopService) GetUser(telegramId int64) (*model.BotUser, error) {
 	return &u, nil
 }
 
-// ListUsers returns every shop user, richest first — which is also the order an
+// ListUsers returns every shop user, richest first â€” which is also the order an
 // admin most often wants.
 func (s *ShopService) ListUsers(limit int) ([]model.BotUser, error) {
 	q := database.GetDB().Model(&model.BotUser{}).Order("balance DESC, telegram_id ASC")
@@ -195,7 +195,7 @@ func (s *ShopService) RequestTopUp(telegramId int64, name string, amount int64) 
 }
 
 // AttachDiscountCode records the code a buyer typed against their pending
-// top-up. Nothing is redeemed here — the code is only settled if and when an
+// top-up. Nothing is redeemed here â€” the code is only settled if and when an
 // admin approves the payment.
 func (s *ShopService) AttachDiscountCode(id int, code string) (*model.WalletTopUp, error) {
 	row, err := s.GetTopUp(id)
@@ -364,12 +364,14 @@ func (s *ShopService) CreateConfig(inboundSvc *InboundService, telegramId int64,
 		return nil, ErrInsufficientFund
 	}
 
-	inboundId, _ := s.settingService.GetShopInboundId()
-	if inboundId <= 0 {
+	inboundIds, err := s.settingService.GetShopInbounds()
+	if err != nil || len(inboundIds) == 0 {
 		return nil, ErrNoShopInbound
 	}
-	if _, err := inboundSvc.GetInbound(inboundId); err != nil {
-		return nil, ErrNoShopInbound
+	for _, id := range inboundIds {
+		if _, err := inboundSvc.GetInbound(id); err != nil {
+			return nil, err
+		}
 	}
 
 	email, err := s.configEmail(name)
@@ -386,15 +388,18 @@ func (s *ShopService) CreateConfig(inboundSvc *InboundService, telegramId int64,
 	if days, _ := s.settingService.GetShopConfigDays(); days > 0 {
 		client.ExpiryTime = time.Now().AddDate(0, 0, days).UnixMilli()
 	}
-	if _, err := s.clientService.CreateOne(inboundSvc, inboundId, client); err != nil {
-		return nil, err
+	
+	for _, id := range inboundIds {
+		if _, err := s.clientService.CreateOne(inboundSvc, id, client); err != nil {
+			return nil, err
+		}
 	}
 
 	cfg := &model.BotConfig{
 		TelegramId: telegramId,
 		Email:      email,
 		SubID:      subId,
-		InboundId:  inboundId,
+		InboundId:  inboundIds[0],
 		VolumeGB:   volumeGB,
 		Active:     true,
 	}
@@ -553,7 +558,7 @@ func (s *ShopService) AddVolume(inboundSvc *InboundService, id int, extraGB int6
 }
 
 // DeleteConfig removes the config and its panel client. Whatever it already
-// consumed stays charged — the ledger is history, not a reservation.
+// consumed stays charged â€” the ledger is history, not a reservation.
 func (s *ShopService) DeleteConfig(inboundSvc *InboundService, id int) error {
 	cfg, err := s.GetConfig(id)
 	if err != nil {
@@ -602,7 +607,7 @@ type BillingResult struct {
 //
 // Charging works off a running total rather than a delta: the cost of all the
 // traffic a config has ever moved is recomputed, and only the part not already
-// charged is taken. That makes the run exactly idempotent — a crash between the
+// charged is taken. That makes the run exactly idempotent â€” a crash between the
 // debit and the bookkeeping cannot double-charge, and no fraction of a gigabyte
 // is lost to rounding across runs.
 func (s *ShopService) BillAll(inboundSvc *InboundService) BillingResult {
@@ -669,7 +674,7 @@ func (s *ShopService) BillAll(inboundSvc *InboundService) BillingResult {
 
 		if owedTraffic > 0 {
 			if _, err := s.credit(cfg.TelegramId, -owedTraffic, model.TxUsage,
-				fmt.Sprintf("%s — %s", cfg.Email, humanGB(used))); err != nil {
+				fmt.Sprintf("%s â€” %s", cfg.Email, humanGB(used))); err != nil {
 				logger.Warning("shop: could not charge traffic for", cfg.Email, err)
 				continue
 			}
@@ -751,7 +756,7 @@ type DeletedConfig struct {
 // recovered, and deletes the ones that have been dead longer than the admin's
 // configured grace period.
 //
-// "Dead" is traffic exhausted or an empty wallet — states the owner did not
+// "Dead" is traffic exhausted or an empty wallet â€” states the owner did not
 // choose. A config its owner paused on purpose is left alone however long it
 // stays off; deleting someone's config because they turned it off for a holiday
 // would be a nasty surprise.
@@ -877,3 +882,4 @@ func humanGB(bytes int64) string {
 	}
 	return fmt.Sprintf("%.2f GB", float64(bytes)/float64(shopBytesPerGB))
 }
+
