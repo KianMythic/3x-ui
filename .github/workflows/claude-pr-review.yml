@@ -49,7 +49,7 @@ jobs:
         env:
           COMMENT_ID: ${{ github.event.comment.id }}
         run: gh api "repos/${REPO}/issues/comments/${COMMENT_ID}/reactions" -f content=eyes
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
       # An `@claude review` vouches for the head that existed when it was typed;
@@ -95,7 +95,7 @@ jobs:
           fi
       # Read-only, and pinned to one immutable commit: this job holds a
       # write-scoped token, so running anything out of pr-head/ would be a pwn-request.
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
         if: steps.reviewed.outputs.done != 'true'
         with:
           ref: ${{ steps.pinned-sha.outputs.sha }}

@@ -27,7 +27,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
       - name: Non-interactive install smoke test
         run: bash deploy/test/smoke-noninteractive.sh
 
@@ -39,6 +39,6 @@ jobs:
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
       - name: First-boot credential smoke test
         run: bash deploy/test/smoke-firstboot.sh

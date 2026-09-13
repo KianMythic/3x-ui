@@ -45,11 +45,11 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         if: matrix.language == 'go'
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: 'npm'
