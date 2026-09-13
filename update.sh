@@ -896,8 +896,14 @@ update_x-ui() {
     echo -e "${green}Downloading new x-ui version...${plain}"
 
     tag_version=$(${curl_bin} -Ls "https://api.github.com/repos/KianMythic/3x-ui/releases/latest" 2> /dev/null | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    repo_to_download="KianMythic/3x-ui"
     if [[ ! -n "$tag_version" ]]; then
-        _fail "ERROR: Failed to fetch x-ui version, it may be due to GitHub API restrictions, please try it later"
+        echo -e "${yellow}Failed to fetch KianMythic/3x-ui release. Falling back to MHSanaei/3x-ui...${plain}"
+        tag_version=$(${curl_bin} -Ls "https://api.github.com/repos/MHSanaei/3x-ui/releases/latest" 2> /dev/null | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        repo_to_download="MHSanaei/3x-ui"
+        if [[ ! -n "$tag_version" ]]; then
+            _fail "ERROR: Failed to fetch x-ui version, it may be due to GitHub API restrictions, please try it later"
+        fi
     fi
     echo -e "Got x-ui latest version: ${tag_version}, beginning the installation..."
     ${curl_bin} -fLRo ${xui_folder}-linux-$(arch).tar.gz https://github.com/${repo_to_download}/releases/download/${tag_version}/x-ui-linux-$(arch).tar.gz 2> /dev/null
