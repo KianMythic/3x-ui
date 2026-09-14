@@ -121,6 +121,7 @@ export class AllSetting {
   shopPricePerGB = 0;
   shopPricePerDay = 0;
   shopInboundId = 0;
+  shopInbounds = '';
   shopMinTopUp = 0;
   shopMaxTopUp = 0;
   shopMinBalance = 0;

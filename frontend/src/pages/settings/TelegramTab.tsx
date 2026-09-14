@@ -401,15 +401,16 @@ export default function TelegramTab({ allSetting, updateSetting }: TelegramTabPr
             <SettingListItem paddings="small" title={t('pages.settings.shopInboundId')} description={t('pages.settings.shopInboundIdDesc')}>
               <Select
                 style={{ width: '100%' }}
-                value={allSetting.shopInboundId || undefined}
+                mode="multiple"
+                value={allSetting.shopInbounds ? allSetting.shopInbounds.split(',').map(Number) : (allSetting.shopInboundId ? [allSetting.shopInboundId] : [])}
                 disabled={!allSetting.salesBotEnable}
                 loading={inboundsLoading}
                 options={inboundOptions}
                 optionFilterProp="label"
                 showSearch
                 allowClear
-                data-testid="shop-inbound"
-                onChange={(v) => updateSetting({ shopInboundId: Number(v) || 0 })}
+                data-testid="shop-inbounds"
+                onChange={(v) => updateSetting({ shopInbounds: v.join(',') })}
               />
             </SettingListItem>
 
